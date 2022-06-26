@@ -29,7 +29,7 @@ import joblib,os
 import pandas as pd
 
 # Vectorizer
-news_vectorizer = open("resources/tfidfvect.pkl","rb")
+news_vectorizer = open("resources/thevect.pkl","rb")
 tweet_cv = joblib.load(news_vectorizer) # loading your vectorizer from the pkl file
 
 # Load your raw data
@@ -38,6 +38,9 @@ raw = pd.read_csv("resources/train.csv")
 # The main function where we will build the actual app
 def main():
 	"""Tweet Classifier App with Streamlit """
+
+	#customized our menu here
+	st.set_page_config(page_title="Team CBB5 API",page_icon="random")
 
 	# Creates a main title and subheader on your page -
 	# these are static across all pages
@@ -78,6 +81,7 @@ def main():
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
+			st.balloons()
 #################################################################
 	if selection == "Random Forest":
 
@@ -97,6 +101,7 @@ def main():
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
+			st.balloons()
 #########################################################################
 	if selection == "Naive-Bayes":
 
@@ -118,6 +123,7 @@ def main():
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
+			st.balloons()
 #########################################################################
 
 	if selection == "Support Vector(linear)":
@@ -138,6 +144,7 @@ def main():
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
+			st.balloons()
 #########################################################################
 	if selection == "Support Vector(rbf)":
 
@@ -157,6 +164,7 @@ def main():
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
+			st.balloons()
 #########################################################################
 
 	if selection == "Decision Tree":
@@ -177,6 +185,7 @@ def main():
 			# You can use a dictionary or similar structure to make this output
 			# more human interpretable.
 			st.success("Text Categorized as: {}".format(prediction))
+			st.balloons()
 
 # Required to let Streamlit instantiate our web app.  
 if __name__ == '__main__':
