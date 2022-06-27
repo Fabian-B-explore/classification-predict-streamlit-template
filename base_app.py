@@ -50,7 +50,7 @@ def main():
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
-	options = ["Multi Logistic Regression", "Decision Tree","Random Forest","Naive-Bayes","Support Vector(linear)","Support Vector(rbf)"]
+	options = ["Information","Multi Logistic Regression", "Decision Tree","Random Forest","Naive-Bayes","Support Vector(linear)","Support Vector(rbf)"]
 	selection = st.sidebar.selectbox("Please choose a model here", options)
 
 	# Building out the "Information" page
