@@ -76,38 +76,54 @@ def main():
 	if selection == "Make a Prediction":
 		# Creating a text box for user input
 		st.subheader("Make a Prediction")
-		modelChoice = st.radio("Choose a model", ("Multi Logistic Regression", "Decision Tree", "Random Forest","Naive-Bayes","SVC(kernel=linear)","SVC(kernel=rbf)"))
+		modelChoice = st.selectbox(on_change=None,label='Please choose a model',options=("Multi Logistic Regression","Decision Tree","Random Forest","Naive-Bayes","SVC(kernel=linear)","SVC(kernel=rbf)"))
+		#modelChoice = st.radio("Choose a model", ("Multi Logistic Regression","Decision Tree","Random Forest","Naive-Bayes","SVC(kernel=linear)","SVC(kernel=rbf)"))
 		tweet_text = st.text_area("Enter a tweet below",placeholder="eg. RT @SoyNovioDeTodas: It's 2016, and a racist, sexist, climate change denying bigot is leading in the polls. #ElectionNight")
-		if st.button("Classify"):
+
+		if modelChoice == "Multi Logistic Regression":
 			# Transforming user input with vectorizer
 			vect_text = tweet_cv.transform([tweet_text]).toarray()
-			if modelChoice == "Multi Logistic Regression":
+			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/LogisticRegression().pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
-			elif modelChoice == "Decision Tree":
+				st.success("Text Categorized as: {}".format(prediction))
+
+
+
+		elif modelChoice == "Decision Tree":
+			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/DecisionTreeClassifier(random_state=42).pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
+				st.success("Text Categorized as: {}".format(prediction))
 
-			elif modelChoice == "Random Forest":
+		elif modelChoice == "Random Forest":
+			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/RandomForestClassifier(random_state=42).pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
+				st.success("Text Categorized as: {}".format(prediction))
 
-			elif modelChoice == "Naive-Bayes":
+		elif modelChoice == "Naive-Bayes":
 				predictor = joblib.load(open(os.path.join("resources/MultinomialNB(alpha=0.1).pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
+				st.success("Text Categorized as: {}".format(prediction))
 
-			elif modelChoice == "SVC(kernel=linear)":
+		elif modelChoice == "SVC(kernel=linear)":
+			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/SVC(kernel='linear').pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
+				st.success("Text Categorized as: {}".format(prediction))
 
-			elif modelChoice == "SVC(kernel=rbf)":
+		elif modelChoice == "SVC(kernel=rbf)":
+			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/SVC().pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
+				st.success("Text Categorized as: {}".format(prediction))
 
-			# When model has successfully run, will print prediction
-			# You can use a dictionary or similar structure to make this output
-			# more human interpretable.
-			st.success("Text Categorized as: {}".format(prediction))
+########################
 	if selection == "How to Use":
 		st.subheader("How to Use")
 		st.markdown("All you have to do is follow these steps:")
@@ -116,6 +132,7 @@ def main():
 		st.write("Step 3: Then choose a model from the available choices")
 		st.write("Step 4: Enter a tweet in the text area")
 		st.write("Step 5: Click Classify!")
+#########################
 	if selection == "About Us":
 		st.subheader("About Us")
 		st.write("Global Data Tech Inc. was founded by a handful of visionaries in 2022. The founders are Fabian Brijlal, William Hlatswayo, Sikelela Zungu, Nobuntu Mzilikazi, Juliet Bopape and Lindelwa Nhlapho. Their firm belief was that data was not just data, but rather information that holds life changing, world transforming potential. Data could be used to not just solve real world problems but create real world breakthroughs in areas where we didn't know we needed breakthroughs. But their vision takes it a step further. They want to make the insights gained from data easily accessible and understandable to everyone. This is why their motto is 'Simple solutions for complex connections.'")
