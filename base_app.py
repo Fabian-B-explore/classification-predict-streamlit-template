@@ -1,33 +1,36 @@
-"""
-
-    Simple Streamlit webserver application for serving developed classification
-	models.
-
-    Author: Explore Data Science Academy.
-
-    Note:
-    ---------------------------------------------------------------------
-    Please follow the instructions provided within the README.md file
-    located within this directory for guidance on how to use this script
-    correctly.
-    ---------------------------------------------------------------------
-
-    Description: This file is used to launch a minimal streamlit web
-	application. You are expected to extend the functionality of this script
-	as part of your predict project.
-
-	For further help with the Streamlit framework, see:
-
-	https://docs.streamlit.io/en/latest/
-
-"""
 # Streamlit dependencies
 import streamlit as st
 import joblib,os
 from PIL import Image
+import re
+from nltk.corpus import stopwords
 
 # Data dependencies
 import pandas as pd
+
+def remove_links_and_usernames(tweet):
+	tweet = tweet.lower()
+	tweet = re.sub(r'http\S+','', tweet)
+	tweet = re.sub(r'@\S+','',tweet)
+	return tweet
+
+def remove_stop_words(tweet):
+	sw = stopwords.words('english')
+	sw.append('USERNAME')
+	sw.append('URL')
+	sw.append('rt')
+	tweetfour = [y for y in tweet if not y in sw]
+	return tweet
+
+
+def remove_punctuation(tweet):
+	tweet = re.sub(r'[^\w\s]', '', str(tweet))
+	tweet = tweet.lstrip()
+	tweet = tweet.rstrip()
+	tweet = tweet.replace('  ', ' ')
+	return tweet
+	
+
 
 # Vectorizer
 news_vectorizer = open("resources/fittedVect.pkl","rb")
@@ -39,14 +42,16 @@ raw = pd.read_csv("resources/train.csv")
 # The main function where we will build the actual app
 def main():
 	"""Tweet Classifier App with Streamlit """
-
 	# Creates a main title and subheader on your page -
 	# these are static across all pages
 	st.title("Global Tech Data Inc. Tweet Classifier")
 	header_image = Image.open('resources/ourLogo.png')
 	st.image(header_image, use_column_width='auto')
 	st.subheader("Determine Users Climate Change Belief by classifying their tweets")
-
+	t_choices = {2: "linking to factual news about climate change",
+			   1: "supporting the belief of man-made climate change",
+			   0: "neither supporting nor refuting the belief of man-made climate change",
+			   -1: "as not not believing in man-made climate change"}
 
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
@@ -56,7 +61,6 @@ def main():
 	# Building out the "Information" page
 	if selection == "More Information":
 		# You can read a markdown file from supporting resources folder
-
 		st.subheader("More information")
 		st.markdown("So you are probably wondering how this works. Well you see long ago when Merlin was alive and Harry Potter-We're just joking! This app which was made by our hard working team, allows you to enter a tweet. Our algorithms will then run some calculations and math gymnastics in the background to determine whether that tweet is written by someone who believes or denies Climate Change.")
 		st.markdown("We are aware that the world is not just black and white and so we have varying degrees of belief/disbelief. So here is a breakdown of what the outputs you may be getting mean:")
@@ -82,46 +86,65 @@ def main():
 
 		if modelChoice == "Multi Logistic Regression":
 			# Transforming user input with vectorizer
-			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			links_removed = remove_links_and_usernames(tweet_text)
+			sw_removed = remove_stop_words(links_removed)
+			pun_removed = remove_punctuation(sw_removed)
+			vect_text = tweet_cv.transform([pun_removed]).toarray()
 			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/LogisticRegression().pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
-				st.success("Text Categorized as: {}".format(prediction))
-
+				st.success("Tweet classified as a {}".format(prediction))
 
 
 		elif modelChoice == "Decision Tree":
-			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			links_removed = remove_links_and_usernames(tweet_text)
+			sw_removed = remove_stop_words(links_removed)
+			pun_removed = remove_punctuation(sw_removed)
+			vect_text = tweet_cv.transform([pun_removed]).toarray()
 			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/DecisionTreeClassifier(random_state=42).pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
-				st.success("Text Categorized as: {}".format(prediction))
+				st.success("Tweet classified as a {}".format(prediction))
 
 		elif modelChoice == "Random Forest":
-			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			links_removed = remove_links_and_usernames(tweet_text)
+			sw_removed = remove_stop_words(links_removed)
+			pun_removed = remove_punctuation(sw_removed)
+			vect_text = tweet_cv.transform([pun_removed]).toarray()
 			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/RandomForestClassifier(random_state=42).pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
-				st.success("Text Categorized as: {}".format(prediction))
+				st.success("Tweet classified as a {}".format(prediction))
 
 		elif modelChoice == "Naive-Bayes":
+			links_removed = remove_links_and_usernames(tweet_text)
+			sw_removed = remove_stop_words(links_removed)
+			pun_removed = remove_punctuation(sw_removed)
+			vect_text = tweet_cv.transform([pun_removed]).toarray()
+			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/MultinomialNB(alpha=0.1).pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
-				st.success("Text Categorized as: {}".format(prediction))
+				st.success("Tweet classified as a {}".format(prediction))
 
 		elif modelChoice == "SVC(kernel=linear)":
-			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			links_removed = remove_links_and_usernames(tweet_text)
+			sw_removed = remove_stop_words(links_removed)
+			pun_removed = remove_punctuation(sw_removed)
+			vect_text = tweet_cv.transform([pun_removed]).toarray()
 			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/SVC(kernel='linear').pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
-				st.success("Text Categorized as: {}".format(prediction))
+				st.success("Tweet classified as a {}".format(prediction))
 
 		elif modelChoice == "SVC(kernel=rbf)":
-			vect_text = tweet_cv.transform([tweet_text]).toarray()
+			links_removed = remove_links_and_usernames(tweet_text)
+			sw_removed = remove_stop_words(links_removed)
+			pun_removed = remove_punctuation(sw_removed)
+			vect_text = tweet_cv.transform([pun_removed]).toarray()
 			if st.button("Classify"):
 				predictor = joblib.load(open(os.path.join("resources/SVC().pkl"), "rb"))
 				prediction = predictor.predict(vect_text)
-				st.success("Text Categorized as: {}".format(prediction))
+				st.success("Tweet classified as a {}".format(prediction))
 
 ########################
 	if selection == "How to Use":
