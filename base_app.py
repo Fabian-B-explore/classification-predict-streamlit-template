@@ -81,13 +81,18 @@ def main():
 		"""
 		)
 		# Creating a text box for user input
-		welcome_tweet_text = st.text_area("Enter a tweet",
+		st.write("Default Prediciton Model: **Support Vector Classifier**")
+		welcome_tweet_text = st.text_area("Enter a tweet below",
 								placeholder="eg. RT @SoyNovioDeTodas: It's 2016, and a racist, sexist, climate change denying bigot is leading in the polls. #ElectionNight")
 
 		links_removed = remove_links_and_usernames(welcome_tweet_text)
 		sw_removed = remove_stop_words(links_removed)
 		pun_removed = remove_punctuation(sw_removed)
 		vect_text = tweet_cv.transform([pun_removed]).toarray()
+
+		st.subheader("Raw Twitter data and label")
+		if st.checkbox('Show raw data'):  # data is hidden if box is unchecked
+			st.write(raw[['sentiment', 'message']])  # will write the df to the page
 
 		if st.button("Classify"):
 			predictor = joblib.load(open(os.path.join("resources/SVC().pkl"), "rb"))
