@@ -60,14 +60,14 @@ def main():
 			   -1: "as not not believing in man-made climate change"}
 
 	# Prediction Labels
-	prediction_labels = {'Anti Climate Chabge': -1,
+	prediction_labels = {'Anti Climate Change': -1,
 						'Neutral about Climate Change': 0,
 						'Pro Climate Change': 1,
-						'News about Climatte Change': 2}
+						'News about Climate Change': 2}
 	# Creating sidebar with selection box -
 	# you can create multiple pages this way
 	options = ["Welcome","More Information","How to Use","Try other Models","About Us","Contact Us"]
-	selection = st.sidebar.selectbox("Menu", options)
+	selection = st.sidebar.selectbox("Navigation Menu", options)
 #####################
 	# Building out the "Welcome" page
 	if selection == "Welcome":
@@ -207,9 +207,28 @@ def main():
 	if selection == "About Us":
 		st.subheader("About Us")
 		st.write("Global Data Tech Inc. was founded by a handful of visionaries in 2022. The founders are Fabian Brijlal, William Hlatswayo, Sikelela Zungu, Nobuntu Mzilikazi, Juliet Bopape and Lindelwa Nhlapho. Their firm belief was that data was not just data, but rather information that holds life changing, world transforming potential. Data could be used to not just solve real world problems but create real world breakthroughs in areas where we didn't know we needed breakthroughs. But their vision takes it a step further. They want to make the insights gained from data easily accessible and understandable to everyone. This is why their motto is 'Simple solutions for complex connections.'")
+		fabians_pic = Image.open('resources/imgs/fabian.png')
+		juliet_pic = Image.open('resources/imgs/juliet.png')
+		nobuntu_pic = Image.open('resources/imgs/nobuntu.png')
+		sikel_pic = Image.open('resources/imgs/sikelela.png')
+		will_pic = Image.open('resources/imgs/william.png')
+		char_pic = Image.open('resources/imgs/charmain.png')
+		c1,c2,c3 = st.columns(3)
+		with c1:
+			st.image(fabians_pic, caption="Fabian Brijlal(Director)",use_column_width='always')
+			st.image(juliet_pic, caption="Juliet Bopape(Senior Data Analyst)",use_column_width='always')
+		with c2:
+			st.write()
+			st.image(will_pic,caption="William Hlatshwayo(Director)",use_column_width='always')
+			st.image(sikel_pic,caption="Sikelela Zungu(Data Analyst)",use_column_width='always')
+		with c3:
+			st.image(char_pic,caption="Lindelwa Nhlapho(Data Analyst)",use_column_width='always')
+			st.image(nobuntu_pic, caption="Nobuntu Mzilikazi(Data Scientist)",use_column_width='always')
+
 	if selection == "Contact Us":
 		st.subheader("Contact Us")
-		st.write("Should you have any enquiries, please contact us via our email address: allfsocial@pm.me")
+		st.write("Should you have any enquiries, please contact us via our email address: enquiries@globaldatatechinc.com")
+
 # Required to let Streamlit instantiate our web app.
 if __name__ == '__main__':
 	main()
