@@ -3,8 +3,10 @@ import streamlit as st
 import joblib,os
 from PIL import Image
 import re
-from nltk.corpus import stopwords
+import nltk
 nltk.download('stopwords')
+
+from nltk.corpus import stopwords
 
 # Data dependencies
 import pandas as pd
