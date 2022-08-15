@@ -4,6 +4,7 @@ import joblib,os
 from PIL import Image
 import re
 from nltk.corpus import stopwords
+nltk.download('stopwords')
 
 # Data dependencies
 import pandas as pd
